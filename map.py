@@ -3,11 +3,15 @@ import os
 import sys
 import datetime
 from multiprocessing import Pool
-from unitcomputation import *
 
 ## Master Control Function
 ## Time: 3/3/14
 ## Author: Edison Qian
+
+def _wrapper(*args):
+    from unitcomputation import *
+    ExtractRidge(*args)
+
 
 if __name__ == '__main__':
     files=['E:/select/r0_51x47.txt',
@@ -24,7 +28,7 @@ if __name__ == '__main__':
     pool_costtime_start= datetime.datetime.now()
 
     pool = Pool(len(files))
-    pool.map(ExtractRidge, files)
+    pool.map(_wrapper, files)
     pool.close()
     pool.join()
 
@@ -35,7 +39,7 @@ if __name__ == '__main__':
     print ('')
     print ('###################################')
     single_costtime_start= datetime.datetime.now()
-    map(ExtractRidge, files)
+    map(_wrapper, files)
     print ('[Single Cost time: '+\
           str((datetime.datetime.now() - single_costtime_start).seconds)+\
           ' seconds]')
